@@ -9,12 +9,13 @@ import SwiftUI
 
 struct NextView: View {
 //    @Binding var isShowActionSheet: Bool
-    @ObservedObject var viewModel: ActionSheetViewModel
+    @StateObject var viewModel: ActionSheetViewModel
    
     var body: some View {
         VStack {
             Button {
                 viewModel.isShowActionSheet = true
+                viewModel.changeMessage(modes: .central)
             } label: {
                 Text("Central")
 //                Image(systemName: "slider.horizontal.3")
@@ -28,10 +29,8 @@ struct NextView: View {
                             var transaction = Transaction()
                             transaction.disablesAnimations = true
                             withTransaction(transaction) {
-                                viewModel.changeMessage(modes: .playing(select: "target"))
                                 viewModel.changeMode(mode: 1)
                                 viewModel.isShowCentral = true
-                                
                             }
                         }),
                         .default(Text(viewModel.message2), action: {
@@ -48,7 +47,7 @@ struct NextView: View {
             .fullScreenCover(isPresented: $viewModel.isShowCentral){
                 if 1 == viewModel.identifier {
                     TherdView(viewModel: ActionSheetViewModel())
-                } else {
+                } else if 2 == viewModel.identifier {
                     ActionSheetView()
                 }
             }

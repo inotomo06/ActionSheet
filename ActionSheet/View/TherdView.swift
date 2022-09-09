@@ -9,13 +9,14 @@ import SwiftUI
 
 struct TherdView: View {
 //    @Binding var isShowActionSheet: Bool
-    @ObservedObject var viewModel: ActionSheetViewModel
+    @StateObject var viewModel: ActionSheetViewModel
    
     var body: some View {
 
         VStack {
             Button {
                 viewModel.isShowActionSheet = true
+                viewModel.changeMessage(modes: .peripheral)
             } label: {
                 Text("Peripheral")
             }
@@ -29,7 +30,6 @@ struct TherdView: View {
                         var transaction = Transaction()
                         transaction.disablesAnimations = true
                         withTransaction(transaction) {
-                            viewModel.changeMessage(modes: .playing(select: "gun"))
                             viewModel.changeMode(mode: 1)
                             viewModel.isShowCentral = true
                             
@@ -49,7 +49,7 @@ struct TherdView: View {
         .fullScreenCover(isPresented: $viewModel.isShowCentral){
             if 1 == viewModel.identifier {
                 NextView(viewModel: ActionSheetViewModel())
-            } else {
+            } else if 2 == viewModel.identifier {
                 ActionSheetView()
             }
         }

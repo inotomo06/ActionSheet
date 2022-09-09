@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ActionSheetView: View {
-    @ObservedObject var viewModel = ActionSheetViewModel()
+    @StateObject var viewModel = ActionSheetViewModel()
     
     var body: some View {
         
@@ -31,17 +31,14 @@ struct ActionSheetView: View {
                         var transaction = Transaction()
                         transaction.disablesAnimations = true
                         withTransaction(transaction) {
-                            viewModel.changeMessage(modes: .playing(select: "target"))
                             viewModel.changeMode(mode: 1)
                             viewModel.isShowCentral = true
-                            
                         }
                     }),
                     .default(Text(viewModel.message2), action: {
                         var transaction = Transaction()
                         transaction.disablesAnimations = true
                         withTransaction(transaction) {
-                            viewModel.changeMessage(modes: .playing(select: "gun"))
                             viewModel.changeMode(mode: 2)
                             viewModel.isShowCentral = true
                         }
@@ -50,10 +47,9 @@ struct ActionSheetView: View {
                 ])
         }
         .fullScreenCover(isPresented: $viewModel.isShowCentral){
-            
             if 1 == viewModel.identifier {
                 NextView(viewModel: ActionSheetViewModel())
-            } else {
+            } else if 2 == viewModel.identifier {
                 TherdView(viewModel: ActionSheetViewModel())
             }
         }

@@ -8,10 +8,11 @@
 import Foundation
 
 final class ActionSheetViewModel: ObservableObject {
-
+    
     enum Modes {
         case onAppear
-        case playing(select: String)
+        case central
+        case peripheral
     }
     
     // 的の画面に遷移
@@ -25,28 +26,27 @@ final class ActionSheetViewModel: ObservableObject {
     // ActionSheetの選択１
     @Published var message = ""
     // ActionSheetの選択２
-    @Published var message2 = "終わる"
+    @Published var message2 = ""
     // Modesの情報を入れてお器
-    @Published var modes: Modes = .playing(select: "")
+    @Published var modes: Modes = .central
     // アクションシートのメッサージのどちらが選択されたかを保存識別するやつ
     @Published var identifier = 0
     
     func changeMessage(modes: Modes) {
-        self.modes = modes
-        switch self.modes {
+//        self.modes = modes
+        switch modes {
         case .onAppear:
             isShowActionSheet = true
             message = "このデバイスを的にする"
             message2 = "このデバイスを銃にする"
             
-        case .playing(select: let selectType):
-            if "target" == selectType {
-                message = "このデバイスを銃にする"
-                message2 = "終わる"
-            } else if "gun" == selectType {
-                message = "このデバイスを的にする"
-                message2 = "終わる"
-            }
+        case .central:
+            message = "このデバイスを銃にする"
+            message2 = "終わる"
+            
+        case .peripheral:
+            message = "このデバイスを的にする"
+            message2 = "終わる"
         }
     }
     
